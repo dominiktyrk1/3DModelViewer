@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>3D Viewer</title>
+      <link rel="stylesheet" type="text/css" href="css/styles.css">
+      <link rel="stylesheet" type="text/css" href="css/import.css">
+      <link rel="stylesheet" type="text/css" href="css/model.css">
+      <link rel="stylesheet" type="text/css" href="css/scene.css">
+      <link rel="stylesheet" type="text/css" href="css/background.css">
+      <link rel="stylesheet" type="text/css" href="css/Lighting.css">
+      <link rel="stylesheet" type="text/css" href="css/Annotate.css">
+      <link rel="stylesheet" type="text/css" href="css/measure.css">
+      <link rel="stylesheet" type="text/css" href="css/camera.css">
+      <link rel="stylesheet" type="text/css" href="css/reset.css">
+      <link rel="stylesheet" type="text/css" href="css/export.css">
+      <link rel="stylesheet" type="text/css" href="css/exportOverlay.css">
+      <link rel="stylesheet" type="text/css" href="css/exportmodel.css">
+      <link rel="stylesheet" type="text/css" href="css/logo.css">
+   </head>
+   <body>
+      <!-- Main Content Container -->
+      <div class="container">
+         <!-- Start Controls Section -->
+         <div class="start-controls">
+            <div class = "test">
+               <button class="menu-button" data-menu="import-menu">IMPORT</button>
+               <button class="menu-button" data-menu="Model-menu">MODEL</button>
+               <button class="menu-button" data-menu="Scene-menu">SCENE</button>
+               <button class="menu-button" data-menu="background-menu">BACKGROUND</button>
+               <button class="menu-button" data-menu="lighting-menu">LIGHTING</button>
+            </div>
+            <div class="start-content-selected">
+
+               <!-- Import Menu -->
+               <div class="import-menu">
+                  <div class = "line"></div>
+                  <div class = "import-model-container">
+                  <div>
+                     <div class = "files">
+                        <div class = "file">COLLADA (.dae)</div>
+                        <br>
+                        <div class = "file">STL (.stl)</div>
+                        <br>
+                        <div class = "file">FBX (.fbx)</div>
+                        <br>
+                        <div class = "file">OBJ (.obj)</div>
+                        <br>
+                        <div class = "file">GLTF (.glb and .gltf)</div>
+                     </div>
+                     <!-- Hide the file input visually -->
+                     <input type="file" id="model-upload" accept=".glb, .gltf, .obj, .stl, .fbx, .dae, .png, .jpg, .svg, .mtl" multiple style="display: none;">
+                     <div class = "import-button" id="import-button">IMPORT MODEL</div>
+                  </div>
+               </div>             
+                  <br>
+                  <div class = "line"></div>
+                  <div class = "texture-container">
+                     <br>
+                  <div class = "file-texture">COLLADA (.dae)</div>
+                  <ul class = "texture-list">
+                     <li>JPEG</li>
+                     <li>PNG</li>
+                  </ul>
+
+                  <div class = "file-texture">FBX (.fbx)</div>
+                  <ul class = "texture-list">
+                     <li>JPEG</li>
+                     <li>PNG</li>
+                  </ul>
+
+                  <div class = "file-texture">OBJ (.obj)</div>
+                  <ul class = "texture-list">
+                     <li>MTL</li>
+                     <li>JPEG</li>
+                     <li>PNG</li>
+                  </ul>
+
+                   <div class = "file-texture">GLTF (.glb and .gltf)</div>
+                  <ul class = "texture-list">
+                   
+                     <li>JPEG</li>
+                     <li>PNG</li>
+                  </ul>
+                  <input type="file" id="texture-upload" accept=" .png, .jpg, .mtl" multiple style="display: none;">
+                  <div class = "import-texture" id="texture-button">IMPORT TEXTURES</div>
+               </div>
+               </div>
+               <!--end of import menu-->
+
+               <!-- start of scene -->
+               <div class="Scene-menu">
+                  <div class = "line"></div>
+               <div class = "particle-container">
+                  <div class="particle" id="rain" onclick="addParticleSystem('RAINFALL')">
+                     <label for="rain">RAIN</label>
+                 </div>
+               
+                 <div class="rain-container">
+                  <input type="range" id="rainIntensity" min="50" max="1000" value="500" step="10">
+                  <div class="rain-percentage">0%</div>
+                </div>
+                <ul class = "scene-options">
+                  <li class = "add-grid">Add Grid</li>
+                  <li class = "add-ground">Add Ground</li>
+                  <li class="import-floor-textures">
+                     Import Ground Textures
+                     <input type="file" id="import-ground" accept=".png, .jpg, .jpeg" style="display: none;">
+                 </li>
+                  <li class = "add-skybox">Add Skybox
+                     <input type="file" id="import-skybox" accept=".png, .jpg, .jpeg" style="display: none;">
+                  </li>
+               </ul>
+               </div>
+               </div>
+                <!-- end of scene -->
+
+               <!-- Background Menu -->
+               <div class="background-menu">
+                  <div class = "line"></div>
+                  <div class = color-selection>
+                     <div class="gradient1"></div>
+                     <div class="gradient2"></div>
+                     <div class="gradient3"></div>
+                     <div class="gradient4"></div>
+                     <div class="background-color-picker" id="color-picker-trigger"></div>
+                     <input type="color" id="color-picker-input" style="display: none;">
+                  </div>
+                  <div for="background-image-upload" class="custom-upload">IMPORT IMAGE</div>
+                  <input type="file" id="background-image-upload" accept=".jpg, .jpeg, .png, .gif" style="display: none;">
+               </div>
+               <!--end of background menu-->
+
+               <!-- Lighting Menu -->
+               <div class="lighting-menu">
+                  <input id="color-picker" type="text" value="ffffff" style = "display:none;">
+                  <div class = "line"></div>
+
+                  <div class = "light-options">
+                     <div class = "light-option">Ambient</div>
+                     <div class = "light-option">Directional</div>
+                     <div class = "light-option">Point</div>
+                     <div class = "light-option">SpotLight</div>
+                  </div>
+
+                  <div class="light-sources">
+                     <!-- Dynamically generated-->
+                  </div>
+                  
+                  <div class="intensity-container">
+                     <input type="range" id="lightIntensity" min="0" max="10" value="5" step=".1">
+                     <div class="intensity-percentage">0%</div>
+                   </div>
+                   
+                   <div class="coordinates-section">
+                     <div class="coordinate">
+                       <input type="number" id="x" name="x" value="0" min="-9" max="9" placeholder="0">
+                       <label for="x">X</label>
+                     </div>
+                     <div class="coordinate">
+                       <input type="number" id="y" name="y" value="0" min="-9" max="9" placeholder="0">
+                       <label for="y">Y</label>
+                     </div>
+                     <div class="coordinate">
+                       <input type="number" id="z" name="z" value="0" min="-9" max="9" placeholder="0">
+                       <label for="z">Z</label>
+                     </div>
+                   </div>
+         
+                  <div class = "add-light">ADD LIGHT</div>
+               </div>
+               <!--end of lighting menu-->
+
+               <!-- Model Menu -->
+               <div class="Model-menu">
+                  <div class = "line"></div>
+                  <div class = "model-name">No Model Loaded</div>
+                  <div class = "model-top">
+                     <ul>
+                        <li class="model-row">
+                          <div class="triangle-label">Triangles</div>
+                          <div class="triangle-count" id = "triangle-count">0</div>
+                        </li>
+                        <li class="model-row">
+                          <div class="vertices-label">Vertices</div>
+                          <div class="vertices-count" id = "vertices-count">0</div>
+                        </li>
+                        <li class="model-row">
+                          <div class="size-label">Size</div>
+                          <div class="size">5</div>
+                        </li>
+                      </ul>
+                    
+                  </div>
+                <div class = "half-line"></div>
+
+                <div class = "increas-decrease">
+                  <div class = "increase-decrease-row">
+                     <img src="assets/increase-scale.png" class = "increase-icon" id = "increase-icon"></img>
+                     <div class = "increase">Increase</div>
+                  </div>
+                  
+                  <div class = "increase-decrease-row">
+                     <img src="assets/decrease-scale.png" class = "decrease-icon" id = "decrease-icon"></img>
+                     <div class = "decrease">Decrease</div>
+                  </div>
+                </div>
+                <br>
+                <div class = "wireframe-selection">
+                  <div class = "wireframe-row">
+                     <img src="assets/defaultwireframe.png" class="default-icon">
+                     <div class = "default">Default</div>
+                  </div>
+                  <div class = "wireframe-row">
+                     <div class = "wireframe-icon">1</div>
+                     <div class = "wireframe">Wireframe</div>
+                  </div>
+
+                  <div class = "wireframe-row">
+                     <div class = "pointcloud-icon">1</div>
+                     <div class = "pointcloud">Point Cloud</div>
+                  </div>
+                </div>
+                <div class = "animation-player-container">
+                  <img src="assets/play.png" class="play-button">
+                  <div class="bar" id="animationProgressBar">
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick long"></div>
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick long"></div>
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick long"></div>
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick long"></div>
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick long"></div>
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick"></div>
+                     <div class="tick long"></div>
+                   </div>
+                   <div class = "animation-count-container">
+                     <div class = "animation-count">0</div>
+                     <div class = "half-line2"></div>
+                     <div class = "animation-total">0</div>
+                   </div>
+                </div>
+
+               </div>
+            </div>
+         </div>
+         <!--end of model menu-->
+         <div class = "canvas-container"><canvas class="canvas" id="3d-canvas">
+           
+         </canvas>
+         <div class="finish-annotate-overlay">
+            <button class="increase-icon" id="increase-icon-size"><img src="assets/increase-icon.png" alt="increase-icon"></button>
+            <button class="decrease-icon" id="decrease-icon-size"><img src="assets/decrease-icon.png" alt="decrease-icon"></button>
+            <button class = "confirm placement" id = "confirm">CONFIRM</button>
+            <button class = "cancel" id = "cancel">CANCEL</button>
+            <button class = "hide" id = "hide">HIDE</button>
+         </div>
+
+         <div class = "finish-camera-overlay" id = "camera-overlay" >
+            <button class = "full-screen" id = "fullscreen">FULL SCREEN</button>
+            <button class = "first-person" id = "firstperson">FIRST PERSON CAMERA</button>
+            <button class = "reset-camera" id = "resetcamera">RESET CAMERA</button>
+         </div>
+
+         <div class = "finish-measure" id = "finish-measure-menu">
+            <div class = "select-overlay" id = 'select-first-overlay'>SELECT FIRST POINT</div>
+            <div class = 'select-overlay' id = 'select-second-overlay'>SELECT SECOND POINT</div>
+            <div class = 'finish-overlay' id = 'finish-overlay'>
+               <div class = "measure-reset" id = "measure-reset">RESET DISTANCE:</div>
+            </div>
+         </div>
+
+         <div class = "logo-overlay">
+            <div class="logo"><img src="assets/cyvilvision.png" alt="Cyvilvision Logo"></div>
+           
+         </div>
+
+         </div>
+     
+         <!-- Finish Controls Section -->
+         <div class="finish-controls">
+          <div class = "test">
+            <button class="finish-button" data-menu="finish-export">EXPORT</button>
+            <button class="finish-button" data-menu="finish-camera">CAMERA</button>
+            <button class="finish-button" data-menu="finish-annotate">ANNOTATE</button>
+            <button class="finish-button" data-menu="finish-measure">MEASURE</button>
+            <button class="finish-button" data-menu="finish-reset">RESET</button>
+          </div>
+            <div class="finish-content-selected">
+
+               <div class = "finish-reset" id = "finish-reset-menu">
+                  <div class = "reset-overlay" id = "reset-overlay">
+                     <div class = "reset-title">Reset Entire Scene?</div>
+                     <div class = "reset-options">
+                        <div class = "reset-yes" id = "reset-yes">Yes</div>
+                        <div class = "reset-no" id = "reset-no">No</div>
+                     </div>
+                  </div>
+               </div>
+
+               <!--star of export menu-->
+               <div class="finish-export" id="finish-export-menu">
+                  <div class = "line"></div>
+                  
+                  <div class="carousel">
+                     <!-- Simplified carousel slides -->
+                     <div class="carousel-slide" data-slide="0">
+                        <div class="carousel-options">
+                           <div class="snap-picture" data-target="0">Screenshot</div>
+                           <div class="download-picture" id = "download">Download</div>
+                        </div>
+                        <img class="carousel-image" src="assets/noimage.png" data-slide="0">
+                     </div>
+                  </div>
+                  <!-- Simplified export settings -->
+                  <div class="export-picture-overlay" id = "export-picture-overlay">
+                     <div class="export-picture-container" id = "export-picture-container"></div>
+                     <div class="export-picture-settings">
+                        <ul class="settings">
+                           <li id="low-res" class="resolution">1280x720</li>
+                           <li id="med-res" class="resolution">1920x1080</li>
+                           <li id="high-res" class="resolution">2560x1440</li>
+                        </ul>
+                        <div class="row">
+                           <label for="widthInput" class="width-label">W</label>
+                           <input  class="width-input" id="widthInput" name="z" placeholder="0000" min="25" max="9999">
+                        </div>
+                        <div class="row">
+                           <label for="lengthInput" class="length-label">L</label>
+                           <input  class="length-input" id="lengthInput" name="z" placeholder="0000" min="25" max="9999">
+                        </div>
+                        <div class = "row">
+                           <div class = "circle-box" id = "circle-box"></div>
+                           <div class = "transparent">TRANSPARENT</div>
+                        </div>
+                        <ul class="settings">
+                           <li id="png" class="file">PNG</li>
+                           <li id="svg" class="file">SVG</li>
+                           <li id="jpeg" class="file">JPEG</li>
+                        </ul>
+                        <div class = "export-overlay-footer">
+                           <div class = "save-image" id = "save-image">Save</div>
+                           <div class = "cancel-image" id = "cancel-image">Cancel</div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="export-model" id="export-model">EXPORT MODEL</div>
+                  <div class = "export-model-overlay" id = "export-model-overlay">
+                     <div class = "export-options">
+                        <div class = "export-options-title">EXPORT MODEL</div>
+                        <div class = "export-option">STL (.stl)</div>
+                        <div class = "export-option">OBJ (.obj)</div>
+                        <div class = "export-option">GLTF(.gltf)</div>
+                     </div>
+                     <div class = "export-options-footer">
+                        <div class = "export-options-cancel" id = "export-options-cancel">Cancel</div>
+                        <div class = "export-options-export" id = "export-options-export">Export</div>
+                     </div>
+                  </div>
+               </div>
+               <!--end of export menu-->
+
+               <!--start of annotate menu-->
+               <div class = "finish-annotate" id = "finish-annotate-menu">
+                  <div class = "line"></div>
+                  <div class = "preset-view-container">
+                     <div class = "view">
+                        <div class = "view-title">Object Direction</div>
+                        <div class = "front" id="front">Front</div>
+                        <div class = "back" id="back" >Back</div>
+                        <div  class = "top" id="top">Top</div>
+                        <div class = "bottom" id="bottom">Bottom</div>
+                        <div class = "right" id="right">Right</div>
+                        <div class = "left"  id="left">Left</div>
+                     </div>
+                     <div class = "small-line"></div>
+                     <div class = "libary-container">
+                        <div class = "libary">LIBARY</div>
+                        <div class = "presets">
+                        </div>
+                     </div>
+                     
+                  </div>
+               
+               </div>
+               <!--end of annotate menu-->
+
+
+               <div class = "finish-camera" id = "finish-camera">
+              
+               </div>
+               </div>
+               </div>
+               </div>
+              
+      <!-- JavaScript Scripts -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.4.5/jscolor.min.js"></script>
+      <script src="/js/toggleStartMenus.js"></script>
+      <script src="/js/toggleFinish-Menu.js"></script>
+      <script type="module" src="/js/script.js"></script>
+      <script type="module" src="/js/import.js"></script>
+      <script type="module" src="/js/Model.js"></script>
+      <script type="module" src="/js/Scene.js"></script>
+      <script type="module" src="/js/Background.js"></script>
+      <script type="module" src="/js/Camera.js"></script>
+      <script type="module" src="/js/Lighting.js"></script>
+      <script type="module" src="/js/Annotations.js"></script>
+      <script type="module" src="/js/fullscreen.js"></script>
+      <script type="module" src="/js/firstperson.js"></script>
+      <script type="module" src="/js/ExportOverlay.js"></script>
+      <script type="module" src="/js/Reset.js"></script>
+      <script type="module" src="/js/Measure.js"></script>
+      <script type="module" src="/js/ExportModel.js"></script>    
+   </body>
+</html>
